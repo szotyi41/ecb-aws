@@ -52,7 +52,6 @@ jobs:
       run: |
         aws lambda update-function-code \
           --function-name saveTitleFunction \
-          --role arn:aws:iam::275794887871:role/ecb-aws \
           --zip-file fileb://lambda.zip
 
     # 8. Deploy chatGptFunction
@@ -60,6 +59,5 @@ jobs:
       run: |
         aws lambda update-function-code \
           --function-name chatGptFunction \
-          --role arn:aws:iam::275794887871:role/ecb-aws \
           --zip-file fileb://lambda.zip
 
