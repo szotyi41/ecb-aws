@@ -1,0 +1,49 @@
+name: Deploy to AWS Lambda
+
+on:
+  push:
+    branches:
+      - main  # Csak a main branch-re történő módosítások aktiválják a pipeline-t
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    # 1. Kód letöltése a GitHub repóból
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    # 2. Node.js környezet beállítása
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '20'
+
+    # 3. Függőségek telepítése
+    - name: Install dependencies
+      run: npm install
+
+    # 4. Kód csomagolása ZIP-be
+    - name: Package Lambda function
+      run: zip -r lambda.zip .
+
+    # 5. Save Title Handler frissítése AWS Lambda-n
+    - name: Update Save Title Function
+      uses: aws-actions/aws-lambda-deploy@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ secrets.AWS_REGION }}
+        function-name: saveTitleFunction
+        zip-file: ./lambda.zip
+
+    # 6. ChatGPT Handler frissítése AWS Lambda-n
+    - name: Update ChatGPT Function
+      uses: aws-actions/aws-lambda-deploy@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ secrets.AWS_REGION }}
+        function-name: chatGptFunction
+        zip-file: ./lambda.zip

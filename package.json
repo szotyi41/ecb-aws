@@ -1,0 +1,11 @@
+{
+  "name": "lambda-project",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "type": "module",
+  "dependencies": {
+    "sequelize": "^6.31.1",
+    "mysql2": "^3.2.0",
+    "puppeteer": "^21.3.0"
+  }
+}
